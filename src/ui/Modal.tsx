@@ -132,6 +132,7 @@ function Window({ children, name }: WindowProps) {
           <HiXMark />
         </Button>
         {cloneElement(children, { close })}
+        {/* {children} */}
       </StyledModal>
     </Overlay>
   );

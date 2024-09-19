@@ -1,46 +1,76 @@
 export interface Note {
   id: number;
-  name: string;
-  isMarked: boolean;
+  name?: string;
+  isMarked?: boolean;
 }
 
+// Action interface definition
 interface Action {
   type: string;
-  payload: Note | number; // Changed to any to handle different payloads (Note or id)
+  payload: Note;
 }
 
-const notes: Note[] = [
-  { id: 1, name: "NOTE #1", isMarked: false },
-  { id: 2, name: "NOTE #2", isMarked: false },
-  { id: 3, name: "NOTE #3", isMarked: false },
-  { id: 4, name: "NOTE #4", isMarked: false },
-];
+// Default notes
+// const defaultNotes: Note[] = [
+//   { id: 1, name: "NOTE #1", isMarked: false },
+//   { id: 2, name: "NOTE #2", isMarked: false },
+//   { id: 3, name: "NOTE #3", isMarked: false },
+//   { id: 4, name: "NOTE #4", isMarked: false },
+// ];
 
-export default function noteReducer(state: Note[] = notes, action: Action) {
+// Load initial notes from localStorage if available
+const loadNotesFromLocalStorage = (): Note[] => {
+  const storedNotes = localStorage.getItem("notes");
+  console.log(storedNotes);
+  return storedNotes ? JSON.parse(storedNotes) : [];
+};
+
+// Save notes to localStorage
+const saveNotesToLocalStorage = (notes: Note[]) => {
+  localStorage.setItem("notes", JSON.stringify(notes));
+};
+
+// Reducer function for handling note actions
+export default function noteReducer(
+  state: Note[] = loadNotesFromLocalStorage(),
+  action: Action
+) {
   switch (action.type) {
-    case "note/add":
-      return [...state, action.payload];
+    case "note/add": {
+      const newNote: Note = {
+        id: action.payload.id,
+        name: action.payload.name,
+        isMarked: false,
+      };
+      const newState = [...state, newNote];
+      saveNotesToLocalStorage(newState);
+      return newState;
+    }
 
     case "note/update": {
-      // Create a new array and update the note with the same id
-      return state.map((note) =>
+      const updatedState = state.map((note) =>
         note.id === action.payload.id
           ? { ...note, name: action.payload.name }
           : note
       );
+      saveNotesToLocalStorage(updatedState);
+      return updatedState;
     }
 
-    case "note/delete":
-      // Remove the note with the given id
-      return state.filter((el) => el.id !== action.payload);
+    // case "note/delete": {
+    //   const updatedState = state.filter((el) => el.id !== action.payload.id);
+    //   saveNotesToLocalStorage(updatedState);
+    //   return updatedState;
+    // }
 
     case "note/mark": {
-      // Toggle the isMarked property of the note with the given id
-      return state.map((note) =>
-        note.id === action.payload
+      const updatedState = state.map((note) =>
+        note.id === action.payload.id
           ? { ...note, isMarked: !note.isMarked }
           : note
       );
+      saveNotesToLocalStorage(updatedState);
+      return updatedState;
     }
 
     default:
@@ -48,18 +78,35 @@ export default function noteReducer(state: Note[] = notes, action: Action) {
   }
 }
 
-export function addNote(newNote: Note) {
+// Action creators
+
+export function addNote(name: string) {
+  const notes = loadNotesFromLocalStorage();
+  const newId = notes.length
+    ? Math.max(...notes.map((note) => note.id)) + 1
+    : 1; // Get next unique id
+  const newNote: Note = {
+    id: newId,
+    name: name,
+    isMarked: false,
+  };
   return { type: "note/add", payload: newNote };
 }
 
 export function updateNote(updatedNote: Note) {
-  return { type: "note/update", payload: updatedNote }; // Updated to accept the full Note
+  return { type: "note/update", payload: updatedNote };
 }
 
-export function deleteNote(id: number) {
-  return { type: "note/delete", payload: id };
-}
+// export function deleteNote(id: number) {
+//   const markNote: Note = {
+//     id,
+//   };
+//   return { type: "note/delete", payload: markNote };
+// }
 
 export function markNote(id: number) {
-  return { type: "note/mark", payload: id };
+  const markNote: Note = {
+    id,
+  };
+  return { type: "note/mark", payload: markNote };
 }

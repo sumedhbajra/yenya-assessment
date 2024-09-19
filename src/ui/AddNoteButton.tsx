@@ -2,13 +2,11 @@ import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "./Modal";
 import Button from "./Button";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addNote } from "../features/My Notes/noteSlice";
 
 export default function AddNoteButton() {
-  const [note, setNote] = useState("");
-
-  function onApply() {
-    if (!note) return;
-  }
+  const [note, setNote] = useState<string>("");
 
   return (
     <div className="flex justify-end w-[75rem]">
@@ -24,12 +22,7 @@ export default function AddNoteButton() {
           </button>
         </Modal.Open>
         <Modal.Window name="delete">
-          <AddNote
-            note={note}
-            setNote={setNote}
-            onApply={onApply}
-            close={close}
-          />
+          <AddNote note={note} setNote={setNote} close={close} />
         </Modal.Window>
       </Modal>
     </div>
@@ -39,11 +32,20 @@ export default function AddNoteButton() {
 interface AddNoteProps {
   note: string;
   setNote: (note: string) => void;
-  onApply: () => void;
+
   close: () => void;
 }
 
-function AddNote({ note, setNote, onApply, close }: AddNoteProps) {
+function AddNote({ note, setNote, close }: AddNoteProps) {
+  const dispatch = useDispatch();
+
+  function onApply() {
+    if (!note) return;
+    dispatch(addNote(note));
+    setNote("");
+    close();
+  }
+
   return (
     <div className="flex flex-col gap-7 items-center">
       <h1 className="font-bold text-[2.5rem]">New Note</h1>

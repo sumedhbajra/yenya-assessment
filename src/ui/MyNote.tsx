@@ -8,7 +8,8 @@ export default function MyNote({ id, name, isMarked }: Note) {
 
   const dispatch = useDispatch();
 
-  function onChange() {
+  function onChange() {' '
+    console.log(id, " this is idd");
     dispatch(markNote(id));
   }
 
@@ -47,3 +48,5 @@ export default function MyNote({ id, name, isMarked }: Note) {
     </div>
   );
 }
+
+// nth child css & .map index 
