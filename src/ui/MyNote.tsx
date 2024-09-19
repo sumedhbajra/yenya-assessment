@@ -41,7 +41,7 @@ export default function MyNote({ id, name, isMarked }: Note) {
             isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
         >
-          <NoteSetting />
+          <NoteSetting id={id} />
         </div>
       </div>
     </div>

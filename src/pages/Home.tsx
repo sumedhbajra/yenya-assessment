@@ -1,7 +1,7 @@
 import NoteList from "../ui/NoteList";
-import AddNote from "../ui/AddNote";
 import ToDoHeader from "../ui/ToDoHeader";
 import NoteOperation from "../features/My Notes/NoteOperation";
+import AddNoteButton from "../ui/AddNoteButton";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
         <NoteOperation />
         <NoteList />
       </div>
-      <AddNote />
+      <AddNoteButton />
     </div>
   );
 }
