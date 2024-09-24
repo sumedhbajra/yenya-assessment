@@ -18,19 +18,16 @@ interface Action {
 //   { id: 4, name: "NOTE #4", isMarked: false },
 // ];
 
-// Load initial notes from localStorage if available
 const loadNotesFromLocalStorage = (): Note[] => {
   const storedNotes = localStorage.getItem("notes");
   console.log(storedNotes);
   return storedNotes ? JSON.parse(storedNotes) : [];
 };
 
-// Save notes to localStorage
 const saveNotesToLocalStorage = (notes: Note[]) => {
   localStorage.setItem("notes", JSON.stringify(notes));
 };
 
-// Reducer function for handling note actions
 export default function noteReducer(
   state: Note[] = loadNotesFromLocalStorage(),
   action: Action
@@ -57,11 +54,11 @@ export default function noteReducer(
       return updatedState;
     }
 
-    // case "note/delete": {
-    //   const updatedState = state.filter((el) => el.id !== action.payload.id);
-    //   saveNotesToLocalStorage(updatedState);
-    //   return updatedState;
-    // }
+    case "note/delete": {
+      const deleteNote = state.filter((el) => el.id !== action.payload.id);
+      saveNotesToLocalStorage(deleteNote);
+      return deleteNote;
+    }
 
     case "note/mark": {
       const updatedState = state.map((note) =>
@@ -78,8 +75,6 @@ export default function noteReducer(
   }
 }
 
-// Action creators
-
 export function addNote(name: string) {
   const notes = loadNotesFromLocalStorage();
   const newId = notes.length
@@ -93,16 +88,20 @@ export function addNote(name: string) {
   return { type: "note/add", payload: newNote };
 }
 
-export function updateNote(updatedNote: Note) {
-  return { type: "note/update", payload: updatedNote };
+export function updateNote(id: number, name: string) {
+  const updateNote: Note = {
+    id,
+    name,
+  };
+  return { type: "note/update", payload: updateNote };
 }
 
-// export function deleteNote(id: number) {
-//   const markNote: Note = {
-//     id,
-//   };
-//   return { type: "note/delete", payload: markNote };
-// }
+export function deleteNote(id: number) {
+  const markNote: Note = {
+    id,
+  };
+  return { type: "note/delete", payload: markNote };
+}
 
 export function markNote(id: number) {
   const markNote: Note = {

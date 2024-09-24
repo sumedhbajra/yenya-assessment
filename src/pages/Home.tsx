@@ -2,6 +2,7 @@ import NoteList from "../ui/NoteList";
 import ToDoHeader from "../ui/ToDoHeader";
 import NoteOperation from "../features/My Notes/NoteOperation";
 import AddNoteButton from "../ui/AddNoteButton";
+import Modal from "../ui/Modal";
 
 export default function Home() {
   return (
@@ -9,9 +10,11 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center  gap-5">
         <ToDoHeader />
         <NoteOperation />
-        <NoteList />
+        <Modal>
+          <NoteList />
+        </Modal>
       </div>
-    
+
       <AddNoteButton />
     </div>
   );

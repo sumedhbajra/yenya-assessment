@@ -33,7 +33,6 @@ const Overlay = styled.div`
   background-color: var(--backdrop-color);
   /* background-color: red; */
   backdrop-filter: blur(4px);
-  z-index: 1000;
   transition: all 0.5s;
 `;
 
@@ -138,7 +137,6 @@ function Window({ children, name }: WindowProps) {
   );
 }
 
-// Assign components to Modal object
 Modal.Open = Open;
 Modal.Window = Window;
 

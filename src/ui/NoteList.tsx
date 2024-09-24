@@ -3,6 +3,8 @@ import { Note } from "../features/My Notes/noteSlice";
 import MyNote from "./MyNote";
 import EmptyData from "./EmptyData";
 import { useSearchParams } from "react-router-dom";
+// import Modal from "./Modal";
+// import Button from "./Button";
 
 export default function NoteList() {
   const notes = useSelector((store: Note[]) => store);
@@ -29,21 +31,26 @@ export default function NoteList() {
 
   return (
     <div>
-      {myNote.length ? (
-        myNote.map((item) => (
-          <MyNote
-            id={item.id}
-            name={item.name}
-            isMarked={item.isMarked}
-            key={item.id}
-          />
-        ))
-      ) : (
-        <div className="flex flex-col gap-40 mt-[10rem]">
-          <EmptyData />
-          <h1 className="text-[2rem]">Empty...</h1>
-        </div>
-      )}
+      <>
+        {myNote.length ? (
+          myNote.map((item) => (
+            <MyNote
+              id={item.id}
+              name={item.name}
+              isMarked={item.isMarked}
+              key={item.id}
+            />
+          ))
+        ) : (
+          <div className="flex flex-col gap-40 mt-[10rem]">
+            <EmptyData />
+            <h1 className="text-[2rem]">Empty...</h1>
+          </div>
+        )}
+        {/* <Modal.Window name="delete">
+            <NoteDelete />
+          </Modal.Window> */}
+      </>
     </div>
   );
 }

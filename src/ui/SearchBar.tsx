@@ -8,7 +8,7 @@ export default function SearchBar() {
         placeholder="Search note..."
         // value={username}
         // onChange={(e) => setUsername(e.target.value)}
-        className="input w-[55rem] h-[3rem] focus:outline-none"
+        className="input w-[55rem] h-[3rem] focus:outline-none p-full"
       />
       <BiSearch size={25} className="text-[--color-brand-500]" />
     </div>
