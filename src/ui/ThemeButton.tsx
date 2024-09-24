@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AiOutlineMoon } from "react-icons/ai";
+import { AiOutlineMoon, AiOutlineSun } from "react-icons/ai";
 
 export default function ThemeButton() {
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -19,7 +19,7 @@ export default function ThemeButton() {
     shadow-md hover:bg-[--color-brand-700] active:bg-[--color-brand-800]"
       onClick={() => setIsDark((e) => !e)}
     >
-      <AiOutlineMoon size={30} />
+      {isDark ? <AiOutlineMoon size={30} /> : <AiOutlineSun size={30} />}
     </div>
   );
 }
