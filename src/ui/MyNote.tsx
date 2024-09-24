@@ -56,11 +56,11 @@ export default function MyNote({ id, name, isMarked }: Note) {
           </div>
         </div>
         <Modal.Window name="delete">
-          <NoteDelete id={id} close={close} />
+          <NoteDelete id={id} close={close} hoveroff={handleMouseLeave} />
         </Modal.Window>
 
         <Modal.Window name="edit">
-          <NoteEdit id={id} close={close} />
+          <NoteEdit id={id} close={close} hoveroff={handleMouseLeave} />
         </Modal.Window>
       </div>
     </Modal>
@@ -70,22 +70,31 @@ export default function MyNote({ id, name, isMarked }: Note) {
 interface NoteOperation {
   id: number;
   close: () => void;
+  hoveroff: () => void;
 }
 
-function NoteDelete({ id, close }: NoteOperation) {
+function NoteDelete({ id, close, hoveroff }: NoteOperation) {
   const dispatch = useDispatch();
   return (
     <div className="flex flex-col gap-5">
       <h1 className="font-bold text-[2.5rem]">Delete Note</h1>
       <span>Are you sure you want to delete this note?</span>
       <span className="flex justify-between">
-        <Button variation="secondary" onClick={close}>
+        <Button
+          variation="secondary"
+          onClick={() => {
+            close();
+            hoveroff();
+          }}
+        >
           Cancel
         </Button>
         <Button
           variation="danger"
           onClick={() => {
             dispatch(deleteNote(id));
+            close();
+            hoveroff();
           }}
         >
           Delete
@@ -95,7 +104,7 @@ function NoteDelete({ id, close }: NoteOperation) {
   );
 }
 
-function NoteEdit({ id, close }: NoteOperation) {
+function NoteEdit({ id, close, hoveroff }: NoteOperation) {
   const selector = useSelector((element: Note) => element.note);
   const dispatch = useDispatch();
 
@@ -116,13 +125,20 @@ function NoteEdit({ id, close }: NoteOperation) {
         />
       </form>
       <span className="flex justify-between">
-        <Button variation="secondary" onClick={close}>
+        <Button
+          variation="secondary"
+          onClick={() => {
+            close();
+            hoveroff();
+          }}
+        >
           Cancel
         </Button>
         <Button
           onClick={() => {
-            dispatch(updateNote(id, note));
             close();
+            dispatch(updateNote(id, note));
+            hoveroff();
           }}
         >
           Update
